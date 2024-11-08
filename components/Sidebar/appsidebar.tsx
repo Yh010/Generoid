@@ -62,6 +62,24 @@ const items = [
   },
 ];
 
+const projects = [
+  {
+    name: "chat 1",
+    url: "#",
+    icon: History,
+  },
+  {
+    name: "chat 2",
+    url: "#",
+    icon: History,
+  },
+  {
+    name: "chat 3",
+    url: "#",
+    icon: History,
+  },
+];
+
 export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
@@ -83,6 +101,8 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* TODO: FIX THIS: Choose one of these two */}
         <Collapsible defaultOpen className="group/collapsible">
           <SidebarGroup>
             <SidebarGroupLabel asChild>
@@ -98,6 +118,23 @@ export function AppSidebar() {
             </CollapsibleContent>
           </SidebarGroup>
         </Collapsible>
+        <SidebarGroup>
+          <SidebarGroupLabel>Projects</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {projects.map((project) => (
+                <SidebarMenuItem key={project.name}>
+                  <SidebarMenuButton asChild isActive>
+                    <a href={project.url}>
+                      <project.icon />
+                      <span>{project.name}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
