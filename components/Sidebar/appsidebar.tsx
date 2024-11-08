@@ -78,7 +78,9 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Generoid</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xl font-bold text-black">
+            Generoid
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
