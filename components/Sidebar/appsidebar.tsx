@@ -1,8 +1,6 @@
 import {
-  Calendar,
   ChevronDown,
   History,
-  Inbox,
   MessageSquare,
   Search,
   Settings,
@@ -33,16 +31,7 @@ const items = [
     url: "#",
     icon: MessageSquare,
   },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
+
   {
     title: "Search",
     url: "#",

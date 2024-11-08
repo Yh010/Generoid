@@ -6,7 +6,7 @@ export function MessageInput() {
   return (
     <div className="relative">
       <Textarea
-        placeholder="Type your message here."
+        placeholder="Describe the component you want to build..."
         className="border border-gray-200 h-24"
       />
       <ComingSoonAlert component={<SendMessageButton />} />
