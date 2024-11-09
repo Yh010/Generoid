@@ -7,7 +7,7 @@ export default function ChatLayout({
 }>) {
   return (
     <div>
-      hi chat from layout
+      Have a great day building and shipping
       {children}
     </div>
   );

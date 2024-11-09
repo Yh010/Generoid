@@ -2,16 +2,22 @@
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useChatStore } from "@/store/chat-store";
 
 interface MessageProps {
   message: string;
 }
-export function SendMessageButton(message: MessageProps) {
+export function SendMessageButton({ message }: MessageProps) {
   const router = useRouter();
+  const addMessage = useChatStore((state) => state.addMessage);
+
   async function sendMessage() {
-    await axios.post("/api/ai", {
+    addMessage({ role: "user", content: message });
+    const response = await axios.post("/api/ai", {
       message: message,
     });
+    addMessage({ role: "assistant", content: response.data.message });
+
     router.push("/chat");
   }
 
