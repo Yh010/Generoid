@@ -26,8 +26,8 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-4">
-      <div className="space-y-4 mb-4">
+    <div className="w-full mx-auto p-4 space-y-4 h-screen flex flex-col items-center overflow-auto sticky">
+      <div className="space-y-4 mb-4 overflow-auto max-h-[85%] w-full">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -42,16 +42,18 @@ export default function ChatPage() {
         ))}
       </div>
 
-      <div className="relative">
-        <Textarea
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type your message..."
-          className="pr-24"
-        />
-        <Button onClick={sendMessage} className="absolute bottom-2 right-2">
-          Send
-        </Button>
+      <div className="fixed bottom-2 w-[60%]">
+        <div className="relative">
+          <Textarea
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type your message..."
+            className="pr-24 rounded-lg"
+          />
+          <Button onClick={sendMessage} className="absolute bottom-2 right-2">
+            Send
+          </Button>
+        </div>
       </div>
     </div>
   );
