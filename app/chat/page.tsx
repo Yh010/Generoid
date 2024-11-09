@@ -27,7 +27,7 @@ export default function ChatPage() {
 
   return (
     <div className="w-full mx-auto p-4 space-y-4 h-screen flex flex-col items-center overflow-auto sticky">
-      <div className="space-y-4 mb-4 overflow-auto max-h-[85%] w-full">
+      <div className="space-y-4 mb-4 px-20 pt-8 overflow-auto max-h-[85%] w-full">
         {messages.map((message, index) => (
           <div
             key={index}

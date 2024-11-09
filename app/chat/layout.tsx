@@ -5,5 +5,11 @@ export default function ChatLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div>{children}</div>;
+  return (
+    <div>
+      <div>chat name</div>
+
+      {children}
+    </div>
+  );
 }
