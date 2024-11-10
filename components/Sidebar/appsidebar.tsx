@@ -4,6 +4,7 @@ import {
   MessageSquare,
   Search,
   Settings,
+  Telescope,
 } from "lucide-react";
 
 import {
@@ -68,8 +69,8 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xl font-bold text-black">
-            Generoid
+          <SidebarGroupLabel className="text-xl font-bold text-black space-x-3">
+            <Telescope className="w-12 h-12" /> <p>Generoid</p>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

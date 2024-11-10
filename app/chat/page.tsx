@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import axios from "axios";
+import { Bot, Webhook } from "lucide-react";
 
 export default function ChatPage() {
   const { messages, addMessage } = useChatStore();
@@ -27,17 +28,19 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="w-full mx-auto p-4 space-y-4 h-screen flex flex-col items-center overflow-auto sticky">
-      <div className="space-y-4 mb-4 px-20 pt-8 overflow-auto max-h-[85%] w-full">
+    <div className="w-full mx-auto p-4 space-y-4 h-screen flex flex-col items-center overflow-auto">
+      <div className="space-y-4 mb-4 pt-8 overflow-auto max-h-[85%] w-full">
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`p-4 rounded-lg ${
-              message.role === "user"
-                ? "bg-blue-100 ml-auto max-w-[80%]"
-                : "bg-gray-100 mr-auto max-w-[80%]"
+            className={`p-4 rounded-lg flex ${
+              message.role === "user" ? "mr-auto w-full" : "mr-auto w-full"
             }`}
           >
+            <div className="mr-3">
+              {message.role === "user" ? <Webhook /> : <Bot />}
+            </div>
+
             {message.content}
           </div>
         ))}
@@ -50,7 +53,7 @@ export default function ChatPage() {
         )}
       </div>
 
-      <div className="fixed bottom-2 w-[60%]">
+      <div className="fixed bottom-2 w-[60%] ">
         <div className="relative">
           <Textarea
             value={newMessage}
