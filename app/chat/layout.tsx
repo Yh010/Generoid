@@ -8,7 +8,7 @@ export default function ChatLayout({
 }>) {
   return (
     <div>
-      <div className="bg-slate-200 p-4 flex justify-between items-center">
+      <div className="bg-sidebar p-4 flex justify-between items-center">
         <p>A simple Card</p>
         <div>
           <User2 />

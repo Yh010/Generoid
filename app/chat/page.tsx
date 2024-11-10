@@ -34,7 +34,9 @@ export default function ChatPage() {
           <div
             key={index}
             className={`p-4 rounded-lg flex ${
-              message.role === "user" ? "mr-auto w-full" : "mr-auto w-full"
+              message.role === "user"
+                ? "mr-auto w-full"
+                : "mr-auto w-full bg-gray-100"
             }`}
           >
             <div className="mr-3">
