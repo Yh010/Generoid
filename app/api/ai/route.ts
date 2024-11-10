@@ -42,25 +42,21 @@ export async function POST(req: NextRequest) {
       responseMimeType: "text/plain",
     }
 
-    // Convert our chat history to Gemini's format
     const contents: GeminiMessage[] = history.map((msg: { role: string, content: string }) => ({
       role: msg.role === 'user' ? 'user' : 'model',
       parts: [{ text: msg.content }]
     }))
 
-    // Add the new message
     contents.push({
       role: 'user',
       parts: [{ text: message }]
     })
 
-    // Make the API call
     const result: GenerateContentResult = await model.generateContent({
       contents,
       generationConfig,
     })
 
-    // Safely extract the response text
     const response = await result.response.text()
 
     return NextResponse.json({
