@@ -15,41 +15,6 @@ const extractFirstCodeBlock = (input: string) => {
   throw new Error("No code block found in input");
 };
 
-// async function generateNewComponent(prompt: string) {
-//   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-  
-//   const systemPrompt = [
-//     "You are a helpful assistant.",
-//     "You're tasked with writing a react component using typescript and tailwind for a website.",
-//     "Only import React as a dependency.",
-//     "Be concise and only reply with code.",
-//   ].join("\n");
-  
-//   const userPrompt = [
-//     `- Component Name: Section`,
-//     `- Component Description: ${prompt}\n`,
-//     `- Do not use libraries or imports other than React.`,
-//     `- Do not have any dynamic data. Use placeholders as data. Do not use props.`,
-//     `- Write only a single component.`,
-//     `- Wrap your response in a code block with tsx syntax highlighting.`,
-//   ].join("\n");
-
-//   const result = await model.generateContent({
-//     contents: [
-//       { role: "user", parts: [{ text: systemPrompt + "\n\n" + userPrompt }] }
-//     ],
-//     generationConfig: {
-//       temperature: 0,
-//       topP: 1,
-//       topK: 1,
-//       maxOutputTokens: 2000,
-//     }
-//   });
-
-//   const response = await result.response.text();
-//   return extractFirstCodeBlock(response);
-// }
-
 export interface GeminiMessage {
   role: 'user' | 'model'
   parts: { text: string }[]
