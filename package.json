@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/standalone": "^7.26.2",
     "@google/generative-ai": "^0.21.0",
+    "@mhsdesign/jit-browser-tailwindcss": "^0.4.1",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-collapsible": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
