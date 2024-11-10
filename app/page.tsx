@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className="h-full w-full flex justify-center items-center">
-      <div className="w-1/2 h-2/3 flex flex-col space-y-6">
+    <div className="min-h-screen w-full flex justify-center items-center">
+      <div className="w-1/2 flex flex-col space-y-6">
         <div className="text-black font-bold">Generoid UI builder</div>
         <div className="text-black font-bold text-3xl">
           Build stunning UI components with Generoid
