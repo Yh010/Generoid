@@ -8,11 +8,12 @@ import axios from "axios";
 export default function ChatPage() {
   const { messages, addMessage } = useChatStore();
   const [newMessage, setNewMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   //introduce new state here to clear the input box when user sends a message
 
   async function sendMessage() {
     if (!newMessage.trim()) return;
-
+    setIsLoading(true);
     addMessage({ role: "user", content: newMessage });
 
     const response = await axios.post("/api/ai", {
@@ -21,7 +22,7 @@ export default function ChatPage() {
     });
 
     addMessage({ role: "assistant", content: response.data.message });
-
+    setIsLoading(false);
     setNewMessage("");
   }
 
@@ -40,6 +41,13 @@ export default function ChatPage() {
             {message.content}
           </div>
         ))}
+        {isLoading && (
+          <div className="bg-gray-100 mr-auto max-w-[80%]">
+            <div className="animate-pulse text-gray-500">
+              Generating component...
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="fixed bottom-2 w-[60%]">

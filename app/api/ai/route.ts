@@ -48,14 +48,14 @@ export async function POST(req: NextRequest) {
       "Be concise and only reply with code.",
     ].join("\n");
   
-  const userPrompt = [
-    `- Component Name: Section`,
-    `- Component Description: ${message}\n`,
-    `- Do not use libraries or imports other than React.`,
-    `- Do not have any dynamic data. Use placeholders as data. Do not use props.`,
-    `- Write only a single component.`,
-    `- Wrap your response in a code block with tsx syntax highlighting.`,
-  ].join("\n");
+    const userPrompt = [
+      `- Component Name: Section`,
+      `- Component Description: ${message}\n`,
+      `- Do not use libraries or imports other than React.`,
+      `- Do not have any dynamic data. Use placeholders as data. Do not use props.`,
+      `- Write only a single component.`,
+      `- Wrap your response in a code block with tsx syntax highlighting.`,
+    ].join("\n");
     
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
     })
 
     const response = await result.response.text()
-
+    //TODO: Response streaming
     return NextResponse.json({
       message: extractFirstCodeBlock(response)
     })
