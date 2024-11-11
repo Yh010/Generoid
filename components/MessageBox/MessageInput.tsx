@@ -11,7 +11,7 @@ export function MessageInput() {
       <Textarea
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Describe the component you want to build..."
-        className="border border-gray-200 h-24"
+        className="border border-gray-200 h-24 resize-none"
       />
       <SendMessageButton message={message} />
     </div>

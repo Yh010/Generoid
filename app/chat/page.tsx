@@ -57,7 +57,7 @@ export default function ChatPage() {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type your message..."
-                className="pr-24 rounded-lg bg-white"
+                className="pr-24 rounded-lg bg-white resize-none"
               />
               <Button
                 onClick={sendMessage}
