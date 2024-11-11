@@ -72,7 +72,7 @@ export default function ChatPage() {
             </div>
           ))}
           {isLoading && <Thinking />}
-          <div className="fixed bottom-2 w-2/5">
+          <div className="fixed bottom-2 w-[38%]">
             <div className="relative">
               <Textarea
                 value={newMessage}
