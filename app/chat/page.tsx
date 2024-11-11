@@ -31,8 +31,8 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="w-full mx-auto p-4 space-y-4 h-screen flex flex-col items-center overflow-auto">
-      <div className="flex">
+    <div className="flex justify-center border h-screen">
+      <div className="border w-1/2 p-6">
         <div className="space-y-4 mb-4 pt-8 overflow-auto max-h-[85%] w-full">
           {messages.map((message, index) => (
             <div
@@ -68,6 +68,8 @@ export default function ChatPage() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="w-1/2">
         <CodeSandbox code={latestcode} type="react" />
       </div>
     </div>

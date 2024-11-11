@@ -6,6 +6,8 @@ import {
   type TailwindConfig,
   createTailwindcss,
 } from "@mhsdesign/jit-browser-tailwindcss";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ChevronsRight } from "lucide-react";
 
 //TODO: REALLY UNDERSTAND WHATS HAPPENING HERE ????
 // Register TSX preset
@@ -150,15 +152,30 @@ const CodeSandbox = ({ code, type }: CodeSandboxProps) => {
   }, [code, type]);
 
   return (
-    <Card className="w-full">
-      <div className="p-4">
-        <div
-          className="relative bg-gray-50 rounded-lg overflow-hidden"
-          style={{ height: "300px" }}
-        >
+    <Card className="w-full h-full">
+      <div className="h-full">
+        <div className="bg-gray-50 rounded-lg h-full">
+          <div className="flex justify-between items-center border-b p-2">
+            <div className="flex justify-center items-center space-x-2">
+              {" "}
+              <ChevronsRight /> Component Name
+            </div>
+            <Tabs defaultValue="code" className="">
+              <TabsList>
+                <TabsTrigger value="code">Code</TabsTrigger>
+                <TabsTrigger value="preview">Preview</TabsTrigger>
+              </TabsList>
+              {/* <TabsContent value="account">
+                Make changes to your account here.
+              </TabsContent>
+              <TabsContent value="password">
+                Change your password here.
+              </TabsContent> */}
+            </Tabs>
+          </div>
           <iframe
             ref={iframeRef}
-            className="w-full h-full"
+            className="w-full h-full px-4 object-contain"
             sandbox="allow-scripts"
             title="code-preview"
           />
