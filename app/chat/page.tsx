@@ -4,9 +4,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import axios from "axios";
-import { Bot, Webhook } from "lucide-react";
+import { Bot, Ellipsis, PenLine, Trash2, Webhook } from "lucide-react";
 import CodeSandbox from "@/components/CodeSandbox/CodeSandbox";
 import Thinking from "@/components/ChatPage/Thinking";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function ChatPage() {
   const { messages, addMessage } = useChatStore();
@@ -32,7 +37,23 @@ export default function ChatPage() {
 
   return (
     <div className="flex justify-center border h-screen">
-      <div className="border w-1/2 p-6">
+      <div className="border w-1/2 pb-6 px-6 pt-4">
+        <div className="flex justify-between items-center">
+          <div>chat name</div>
+          <Popover>
+            <PopoverTrigger className="bg-slate-100 rounded-lg p-1">
+              <Ellipsis />
+            </PopoverTrigger>
+            <PopoverContent className="w-full space-y-3">
+              <div className="flex space-x-3">
+                <PenLine /> <p>Rename</p>
+              </div>
+              <div className="flex space-x-3">
+                <Trash2 /> <p>Delete</p>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
         <div className="space-y-4 mb-4 pt-8 overflow-auto max-h-[85%] w-full">
           {messages.map((message, index) => (
             <div
