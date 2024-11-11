@@ -36,12 +36,12 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex justify-center border h-screen">
-      <div className="border w-1/2 pb-6 px-6 pt-4">
+    <div className="flex justify-center h-screen">
+      <div className="w-1/2 pb-6 px-6 pt-4">
         <div className="flex justify-between items-center">
           <div>chat name</div>
           <Popover>
-            <PopoverTrigger className="bg-slate-100 rounded-lg p-1">
+            <PopoverTrigger className="hover:bg-slate-100 rounded-lg p-1">
               <Ellipsis />
             </PopoverTrigger>
             <PopoverContent className="w-full space-y-3">
