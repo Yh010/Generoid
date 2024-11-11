@@ -6,6 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Bot, Webhook } from "lucide-react";
 import CodeSandbox from "@/components/CodeSandbox/CodeSandbox";
+import Thinking from "@/components/ChatPage/Thinking";
 
 export default function ChatPage() {
   const { messages, addMessage } = useChatStore();
@@ -49,13 +50,7 @@ export default function ChatPage() {
               {message.content}
             </div>
           ))}
-          {isLoading && (
-            <div className="bg-gray-100 mr-auto max-w-[80%]">
-              <div className="animate-pulse text-gray-500">
-                Generating component...
-              </div>
-            </div>
-          )}
+          {isLoading && <Thinking />}
           <div className="fixed bottom-2 w-2/5">
             <div className="relative">
               <Textarea
