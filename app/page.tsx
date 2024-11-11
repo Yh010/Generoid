@@ -26,6 +26,8 @@ export default function Home() {
             Testimonials section
           </Button>
         </div>
+        {/* TODO: FIX THIS ERROR: ChunkLoadError: Loading chunk app/layout failed.
+(timeout: http://localhost:3000/_next/static/chunks/app/layout.js) */}
       </div>
     </div>
   );
