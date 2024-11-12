@@ -1,11 +1,35 @@
 import { CodePanel } from "@/components/Editor/Editor";
-export default function about() {
-  const reactExample = `
-   import React from 'react'; const Section = () => { return ( <section className="bg-gray-100 py-16"> <div className="container mx-auto px-4"> <h2 className="text-3xl font-bold text-gray-800 mb-4">User Card</h2> <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"> <div className="mb-4"> <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name"> Name </label> <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="John Doe" /> </div> <div className="mb-4"> <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email"> Email </label> <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="john.doe@example.com" /> </div> <div className="mb-4"> <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password"> Password </label> <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="********" /> </div> <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" > Submit </button> </div> </div> </section> ); }; export default Section;
-  `;
+import * as prettier from "prettier/standalone";
+import * as babel from "prettier/parser-babel";
+
+const reactExample = `
+  import React from 'react'; const Section = () => { return ( <div className="bg-white shadow-md rounded-lg p-4"> <h2 className="text-xl font-bold mb-2">Section Title</h2> <p className="text-gray-700"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, lectus non commodo suscipit, dolor lectus bibendum nulla, at fermentum justo purus sit amet lacus. </p> </div> ); }; export default Section;
+`;
+
+async function formatCode(): Promise<string> {
+  try {
+    const formatted = await prettier.format(reactExample, {
+      parser: "babel",
+      plugins: [babel],
+      semi: true,
+      singleQuote: false,
+      printWidth: 80,
+      tabWidth: 2,
+      trailingComma: "es5",
+    });
+    return formatted;
+  } catch (error) {
+    console.error("Prettier formatting error:", error);
+    return reactExample;
+  }
+}
+
+export default async function About() {
+  const code = await formatCode();
+
   return (
     <div className="h-screen w-full mt-2">
-      <CodePanel code={reactExample} />
+      <CodePanel code={code} />
     </div>
   );
 }
