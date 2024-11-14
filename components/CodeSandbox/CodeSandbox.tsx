@@ -6,8 +6,8 @@ import {
   type TailwindConfig,
   createTailwindcss,
 } from "@mhsdesign/jit-browser-tailwindcss";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronsRight } from "lucide-react";
+import { Button } from "../ui/button";
 
 //TODO: REALLY UNDERSTAND WHATS HAPPENING HERE ????
 // Register TSX preset
@@ -25,6 +25,7 @@ interface CodeSandboxProps {
 const CodeSandbox = ({ code, type }: CodeSandboxProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [activetab, setActiveTab] = useState(0); //0 for code ,1 for preview
 
   const babelCompile = (code: string, filename: string) =>
     transform(code, {
@@ -149,7 +150,8 @@ const CodeSandbox = ({ code, type }: CodeSandboxProps) => {
     };
 
     updateIframe();
-  }, [code, type]);
+    //TODO: BUG: whenever activetab changes, the iframe is re-calculated => we can use usememo here maybe to avoid re-calculations?
+  }, [code, type, activetab]);
 
   return (
     <Card className="w-full h-full">
@@ -157,28 +159,40 @@ const CodeSandbox = ({ code, type }: CodeSandboxProps) => {
         <div className="bg-gray-50 rounded-lg h-full">
           <div className="flex justify-between items-center border-b p-2">
             <div className="flex justify-center items-center space-x-2">
-              {" "}
               <ChevronsRight /> Component Name
             </div>
-            <Tabs defaultValue="code" className="">
-              <TabsList>
-                <TabsTrigger value="code">Code</TabsTrigger>
-                <TabsTrigger value="preview">Preview</TabsTrigger>
-              </TabsList>
-              {/* <TabsContent value="account">
-                Make changes to your account here.
-              </TabsContent>
-              <TabsContent value="password">
-                Change your password here.
-              </TabsContent> */}
-            </Tabs>
+            <div className="space-x-3 bg-slate-200 p-1 rounded-lg">
+              <Button
+                value="code"
+                className={
+                  activetab == 0 ? "bg-black" : "bg-green-50 text-black"
+                }
+                onClick={() => setActiveTab(0)}
+              >
+                Code
+              </Button>
+              <Button
+                value="preview"
+                className={
+                  activetab == 1 ? "bg-black" : "bg-green-50 text-black"
+                }
+                onClick={() => setActiveTab(1)}
+              >
+                Preview
+              </Button>
+            </div>
           </div>
-          <iframe
-            ref={iframeRef}
-            className="w-full h-full px-4 object-contain"
-            sandbox="allow-scripts"
-            title="code-preview"
-          />
+          {activetab === 1 ? (
+            <iframe
+              ref={iframeRef}
+              className="w-full h-full px-4 object-contain"
+              sandbox="allow-scripts"
+              title="code-preview"
+            />
+          ) : (
+            //<div>{value.current}</div>
+            <div>code</div>
+          )}
         </div>
         {error && <div className="mt-2 text-red-500 text-sm">{error}</div>}
       </div>
