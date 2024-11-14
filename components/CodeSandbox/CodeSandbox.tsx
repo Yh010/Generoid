@@ -8,6 +8,7 @@ import {
 } from "@mhsdesign/jit-browser-tailwindcss";
 import { ChevronsRight } from "lucide-react";
 import { Button } from "../ui/button";
+import { CodePanel } from "../Editor/Editor";
 
 //TODO: REALLY UNDERSTAND WHATS HAPPENING HERE ????
 // Register TSX preset
@@ -190,8 +191,7 @@ const CodeSandbox = ({ code, type }: CodeSandboxProps) => {
               title="code-preview"
             />
           ) : (
-            //<div>{value.current}</div>
-            <div>code</div>
+            <CodePanel code={code} />
           )}
         </div>
         {error && <div className="mt-2 text-red-500 text-sm">{error}</div>}
