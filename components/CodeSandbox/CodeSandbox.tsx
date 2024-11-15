@@ -166,7 +166,7 @@ const CodeSandbox = ({ code, type }: CodeSandboxProps) => {
               <Button
                 value="code"
                 className={
-                  activetab == 0 ? "bg-green-50 text-black" : "bg-black"
+                  activetab == 0 ? "bg-black" : "bg-green-50 text-black"
                 }
                 onClick={() => setActiveTab(0)}
               >
@@ -175,7 +175,7 @@ const CodeSandbox = ({ code, type }: CodeSandboxProps) => {
               <Button
                 value="preview"
                 className={
-                  activetab == 1 ? "bg-green-50 text-black" : "bg-black"
+                  activetab == 1 ? "bg-black" : "bg-green-50 text-black"
                 }
                 onClick={() => setActiveTab(1)}
               >
