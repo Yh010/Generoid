@@ -10,6 +10,7 @@ interface MessageProps {
   message: string;
 }
 export function SendMessageButton({ message }: MessageProps) {
+  const { setCode } = useChatStore();
   const [loading, setIsLoading] = useState(false);
   const router = useRouter();
   const addMessage = useChatStore((state) => state.addMessage);
@@ -21,6 +22,7 @@ export function SendMessageButton({ message }: MessageProps) {
       message: message,
     });
     addMessage({ role: "assistant", content: response.data.message });
+    setCode(response.data.message);
     router.push("/chat");
     setIsLoading(false);
   }

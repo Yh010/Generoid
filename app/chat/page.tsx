@@ -14,12 +14,10 @@ import {
 } from "@/components/ui/popover";
 
 export default function ChatPage() {
-  const { messages, addMessage } = useChatStore();
+  const { messages, addMessage, codeState, setCode } = useChatStore();
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [latestcode, setlatestcode] = useState("");
   //introduce new state here to clear the input box when user sends a message
-  //BUG: why codesandbox doesnt appear after 1st msg? probably we need to put a state in zustand for the latest code and then it will work
   async function sendMessage() {
     if (!newMessage.trim()) return;
     setIsLoading(true);
@@ -30,7 +28,7 @@ export default function ChatPage() {
       history: messages,
     });
     addMessage({ role: "assistant", content: response.data.message });
-    setlatestcode(response.data.message);
+    setCode(response.data.message);
     setIsLoading(false);
     setNewMessage("");
   }
@@ -91,7 +89,7 @@ export default function ChatPage() {
         </div>
       </div>
       <div className="w-1/2">
-        <CodeSandbox code={latestcode} type="react" />
+        <CodeSandbox code={codeState} type="react" />
       </div>
     </div>
   );
