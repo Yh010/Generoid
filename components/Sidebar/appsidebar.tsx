@@ -73,7 +73,7 @@ export function AppSidebar() {
   function addNewUserChat() {
     const id = randomIdGenerator();
     addNewChat({ chatId: id, chatName: `Chat ${userChats.length + 1}` });
-    //TODO: redirect to /chat/chatId when clicked here
+    //TODO:when new chat is clicked, initially the user is on / page , and when he enters text and submits, he gets redirected to /chat/chatid
   }
 
   return (
