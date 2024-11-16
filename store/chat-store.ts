@@ -1,5 +1,7 @@
 import { create } from 'zustand'
 
+//TODO: Db functions to store everything to db
+
 interface Message {
   role: 'user' | 'assistant'
   content: string
