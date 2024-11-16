@@ -16,6 +16,7 @@ interface ChatStore {
 
 interface UserChat{
   chatId: string
+  chatName: string
 }
 
 interface UserChatStore{
@@ -31,7 +32,7 @@ export const useChatStore = create<ChatStore>((set) => ({
   setCode: (code:string) =>  set({codeState:code })
 }))
 
-export const UserChatStore = create<UserChatStore>((set) => ({
+export const useUserChatStore = create<UserChatStore>((set) => ({
   userChats: [],
   addNewChat: (newChat) => set((state) => ({ userChats: [...state.userChats, newChat] }))
   //TODO: Add delete & rename user chat 

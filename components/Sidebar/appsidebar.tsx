@@ -1,7 +1,9 @@
+"use client";
 import {
   ChevronDown,
   History,
   MessageSquare,
+  Plus,
   Search,
   Settings,
   Telescope,
@@ -25,6 +27,7 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import SidebarFooterComponent from "./sidebarFooter";
+import { useUserChatStore } from "@/store/chat-store";
 
 // Menu items.
 const items = [
@@ -65,6 +68,11 @@ const projects = [
 ];
 
 export function AppSidebar() {
+  const { userChats, addNewChat } = useUserChatStore();
+  function addNewUserChat() {
+    addNewChat({ chatId: "22222", chatName: `Chat ${userChats.length + 1}` });
+  }
+
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -87,6 +95,9 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <div>
+          <Plus className="p-1 border border-black" onClick={addNewUserChat} />
+        </div>
 
         {/* TODO: FIX THIS: Choose one of these two and use SidebarMenuSub from shadcn */}
         {/* https://ui.shadcn.com/blocks use this for inspiration */}
@@ -94,7 +105,7 @@ export function AppSidebar() {
           <SidebarGroup>
             <SidebarGroupLabel asChild>
               <CollapsibleTrigger>
-                <History /> History
+                <History /> History{" "}
                 <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
               </CollapsibleTrigger>
             </SidebarGroupLabel>
@@ -102,6 +113,17 @@ export function AppSidebar() {
               <div>chat 1</div>
               <div>chat 2</div>
               <div>chat 3</div>
+              <div className="space-y-4">
+                {userChats.length === 0 ? (
+                  <div>no chats currently</div>
+                ) : (
+                  userChats.map((userchat, index) => (
+                    <div key={index} className="">
+                      {userchat.chatName}
+                    </div>
+                  ))
+                )}
+              </div>
             </CollapsibleContent>
           </SidebarGroup>
         </Collapsible>
