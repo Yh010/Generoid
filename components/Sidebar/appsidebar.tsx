@@ -28,6 +28,7 @@ import {
 } from "../ui/collapsible";
 import SidebarFooterComponent from "./sidebarFooter";
 import { useUserChatStore } from "@/store/chat-store";
+import { randomIdGenerator } from "@/lib/utils";
 
 // Menu items.
 const items = [
@@ -70,7 +71,9 @@ const projects = [
 export function AppSidebar() {
   const { userChats, addNewChat } = useUserChatStore();
   function addNewUserChat() {
-    addNewChat({ chatId: "22222", chatName: `Chat ${userChats.length + 1}` });
+    const id = randomIdGenerator();
+    addNewChat({ chatId: id, chatName: `Chat ${userChats.length + 1}` });
+    //TODO: redirect to /chat/chatId when clicked here
   }
 
   return (
@@ -95,7 +98,7 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <div>
+        <div className="w-full flex justify-center">
           <Plus className="p-1 border border-black" onClick={addNewUserChat} />
         </div>
 
@@ -110,12 +113,10 @@ export function AppSidebar() {
               </CollapsibleTrigger>
             </SidebarGroupLabel>
             <CollapsibleContent>
-              <div>chat 1</div>
-              <div>chat 2</div>
-              <div>chat 3</div>
+              {/* TODO: Improve UI */}
               <div className="space-y-4">
                 {userChats.length === 0 ? (
-                  <div>no chats currently</div>
+                  <div>Start adding new chats to continue!</div>
                 ) : (
                   userChats.map((userchat, index) => (
                     <div key={index} className="">
