@@ -36,5 +36,13 @@ export const useChatStore = create<ChatStore>((set) => ({
 export const useUserChatStore = create<UserChatStore>((set) => ({
   userChats: [],
   addNewChat: (newChat) => set((state) => ({ userChats: [...state.userChats, newChat] }))
-  //TODO: Add delete & rename user chat 
+  //TODO: Add delete & rename user chat
+  //TODO: when new user chat is created, the chat from other userchats should not come in this new chat => that is, contents of other chats shouldnt get mixed
+  // solution => associate each userchat and contents with the id like this:
+  // userchat-23r2r2r : {
+  //    id:
+  //    contents: 
+  // }
+  //properly modify the above structure
+  
 }))
