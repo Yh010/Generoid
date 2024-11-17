@@ -29,6 +29,7 @@ import SidebarFooterComponent from "./sidebarFooter";
 import { useUserChatStore } from "@/store/chat-store";
 import { randomIdGenerator } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { useRouter, useParams } from "next/navigation";
 
 // Menu items.
 const items = [
@@ -52,10 +53,16 @@ const items = [
 
 export function AppSidebar() {
   const { userChats, addNewChat } = useUserChatStore();
+  const router = useRouter();
+  const params = useParams<{ chatId: string }>();
   function addNewUserChat() {
     const id = randomIdGenerator();
     addNewChat({ chatId: id, chatName: `Chat ${userChats.length + 1}` });
     //TODO:when new chat is clicked, initially the user is on / page , and when he enters text and submits, he gets redirected to /chat/chatid
+    //better approach: when new chat is clicked => redirect to / page, and when the user submits his query, send it to the BE, and from the backend,
+    //return a random chat id along with ai response, and then the user will be redirected to /chat/chatid
+    router.push("/");
+    //now how to go to /chat/chatid using backend??
   }
 
   return (
@@ -101,13 +108,20 @@ export function AppSidebar() {
               </CollapsibleTrigger>
             </SidebarGroupLabel>
             <CollapsibleContent>
-              {/* TODO: Improve UI */}
-              <div className="space-y-4">
+              {/* TODO: Improve UI => scrollbar only for this section and not the whole sidebar*/}
+              <div className="space-y-4 ">
                 {userChats.length === 0 ? (
                   <div>Start adding new chats to continue!</div>
                 ) : (
                   userChats.map((userchat, index) => (
-                    <div key={index} className="">
+                    <div
+                      key={index}
+                      className={
+                        userchat.chatId === params.chatId
+                          ? "border bg-gray-200 rounded-lg px-1"
+                          : "px-1"
+                      }
+                    >
                       {userchat.chatName}
                     </div>
                   ))

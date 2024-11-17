@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-//TODO: Db functions to store everything to db
+//TODO: Db functions to store everything to db => db code should be in the backend, and things to store in the db =>chathistory and chatid and user details
 
 interface Message {
   role: 'user' | 'assistant'
@@ -17,6 +17,7 @@ interface ChatStore {
 interface UserChat{
   chatId: string
   chatName: string
+  //store the code as well?
 }
 
 interface UserChatStore{

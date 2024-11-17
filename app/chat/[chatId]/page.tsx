@@ -13,7 +13,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function ChatPage() {
+interface PageProp {
+  params: {
+    chatId: string;
+  };
+}
+export default function Page({ params }: PageProp) {
   const { messages, addMessage, codeState, setCode } = useChatStore();
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -32,12 +37,11 @@ export default function ChatPage() {
     setIsLoading(false);
     setNewMessage("");
   }
-
   return (
     <div className="flex justify-center h-screen">
       <div className="w-1/2 pb-6 px-6 pt-4">
         <div className="flex justify-between items-center">
-          <div>chat name</div>
+          <div>chat name : {params.chatId}</div>
           <Popover>
             <PopoverTrigger className="hover:bg-slate-100 rounded-lg p-1">
               <Ellipsis />
