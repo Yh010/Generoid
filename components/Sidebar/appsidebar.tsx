@@ -1,22 +1,11 @@
 "use client";
-import {
-  ChevronDown,
-  History,
-  MessageSquare,
-  Search,
-  Settings,
-  Telescope,
-} from "lucide-react";
+import { ChevronDown, History, Telescope } from "lucide-react";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
@@ -31,26 +20,6 @@ import { randomIdGenerator } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useRouter, useParams } from "next/navigation";
 
-// Menu items.
-const items = [
-  {
-    title: "New Chat",
-    url: "#",
-    icon: MessageSquare,
-  },
-
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
-
 export function AppSidebar() {
   const { userChats, addNewChat } = useUserChatStore();
   const router = useRouter();
@@ -58,11 +27,7 @@ export function AppSidebar() {
   function addNewUserChat() {
     const id = randomIdGenerator();
     addNewChat({ chatId: id, chatName: `Chat ${userChats.length + 1}` });
-    //TODO:when new chat is clicked, initially the user is on / page , and when he enters text and submits, he gets redirected to /chat/chatid
-    //better approach: when new chat is clicked => redirect to / page, and when the user submits his query, send it to the BE, and from the backend,
-    //return a random chat id along with ai response, and then the user will be redirected to /chat/chatid
     router.push("/");
-    //now how to go to /chat/chatid using backend??
   }
 
   return (
@@ -72,20 +37,6 @@ export function AppSidebar() {
           <SidebarGroupLabel className="text-xl font-bold text-black space-x-3">
             <Telescope className="w-12 h-12" /> <p>Generoid</p>
           </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
         </SidebarGroup>
         <div className="w-full flex justify-center">
           <Button
