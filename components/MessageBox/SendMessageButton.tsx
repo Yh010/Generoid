@@ -43,8 +43,8 @@ export function SendMessageButton({ message }: MessageProps) {
         message: message,
       });
 
-      addMessage({ role: "assistant", content: response.data.message });
-      setCode(response.data.message);
+      addMessage({ role: "assistant", content: response.data.description });
+      setCode(response.data.code);
       if (chatId) {
         router.push(`/chat/${chatId}`);
       } else {

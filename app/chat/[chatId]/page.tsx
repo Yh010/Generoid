@@ -32,8 +32,8 @@ export default function Page({ params }: PageProp) {
       message: newMessage,
       history: messages,
     });
-    addMessage({ role: "assistant", content: response.data.message });
-    setCode(response.data.message);
+    addMessage({ role: "assistant", content: response.data.description });
+    setCode(response.data.code);
     setIsLoading(false);
     setNewMessage("");
   }
