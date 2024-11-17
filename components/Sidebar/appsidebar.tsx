@@ -3,7 +3,6 @@ import {
   ChevronDown,
   History,
   MessageSquare,
-  Plus,
   Search,
   Settings,
   Telescope,
@@ -29,6 +28,7 @@ import {
 import SidebarFooterComponent from "./sidebarFooter";
 import { useUserChatStore } from "@/store/chat-store";
 import { randomIdGenerator } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 // Menu items.
 const items = [
@@ -47,24 +47,6 @@ const items = [
     title: "Settings",
     url: "#",
     icon: Settings,
-  },
-];
-
-const projects = [
-  {
-    name: "chat 1",
-    url: "#",
-    icon: History,
-  },
-  {
-    name: "chat 2",
-    url: "#",
-    icon: History,
-  },
-  {
-    name: "chat 3",
-    url: "#",
-    icon: History,
   },
 ];
 
@@ -99,7 +81,13 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <div className="w-full flex justify-center">
-          <Plus className="p-1 border border-black" onClick={addNewUserChat} />
+          <Button
+            variant="outline"
+            onClick={addNewUserChat}
+            className="w-full border bg-white rounded-lg mx-2"
+          >
+            <div>New chat</div>
+          </Button>
         </div>
 
         {/* TODO: FIX THIS: Choose one of these two and use SidebarMenuSub from shadcn */}
@@ -128,23 +116,6 @@ export function AppSidebar() {
             </CollapsibleContent>
           </SidebarGroup>
         </Collapsible>
-        <SidebarGroup>
-          <SidebarGroupLabel>Projects</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {projects.map((project) => (
-                <SidebarMenuItem key={project.name}>
-                  <SidebarMenuButton asChild isActive>
-                    <a href={project.url}>
-                      <project.icon />
-                      <span>{project.name}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
       <SidebarTrigger />
       <SidebarFooterComponent />
