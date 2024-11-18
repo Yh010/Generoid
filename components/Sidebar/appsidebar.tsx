@@ -1,6 +1,6 @@
 "use client";
 import { ChevronDown, History, Telescope } from "lucide-react";
-
+import { signIn, signOut } from "next-auth/react";
 import {
   Sidebar,
   SidebarContent,
@@ -82,6 +82,22 @@ export function AppSidebar() {
           </SidebarGroup>
         </Collapsible>
       </SidebarContent>
+      <Button
+        className="mx-2"
+        onClick={() => {
+          signIn();
+        }}
+      >
+        Login
+      </Button>
+      <Button
+        className="mx-2"
+        onClick={() => {
+          signOut();
+        }}
+      >
+        Logout
+      </Button>
       <SidebarTrigger />
       <SidebarFooterComponent />
     </Sidebar>
