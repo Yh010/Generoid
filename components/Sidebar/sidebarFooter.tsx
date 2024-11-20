@@ -1,4 +1,4 @@
-import { ChevronUp, User2 } from "lucide-react";
+import { ChevronUp, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +12,7 @@ import {
   SidebarMenuItem,
 } from "../ui/sidebar";
 import { useSession } from "next-auth/react";
+
 export default function SidebarFooterComponent() {
   const session = useSession();
   const username = session.data?.user?.name;
@@ -22,7 +23,9 @@ export default function SidebarFooterComponent() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton>
-                <User2 /> {username ?? "signin first"}
+                <User />
+                <div>{username ?? "signin first"}</div>
+
                 <ChevronUp className="ml-auto" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
