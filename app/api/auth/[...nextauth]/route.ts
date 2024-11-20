@@ -1,23 +1,13 @@
 import NextAuth from "next-auth"
-import CredentialsProvider from 'next-auth/providers/credentials';
-
+import GoogleProvider from "next-auth/providers/google";
+//TODO: when deploying, change the call back urls and authorized urls to the deployed domain
 const handler = NextAuth({
-     providers: [
-    CredentialsProvider({
-        name: 'Credentials',
-        credentials: {
-          username: { label: 'email', type: 'text', placeholder: 'Email' },
-          password: { label: 'password', type: 'password', placeholder: 'password' },
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        async authorize(credentials: any) {
-            
-            return {
-                id: "user1"
-            };
-        },
+    providers: [
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID || "",
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
       })
-  ],
+    ],
   secret: process.env.NEXTAUTH_SECRET
 })
 
