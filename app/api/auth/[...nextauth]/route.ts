@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 //TODO: when deploying, change the call back urls and authorized urls to the deployed domain
-const handler = NextAuth({
+export const handler = NextAuth({
     providers: [
       GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID || "",

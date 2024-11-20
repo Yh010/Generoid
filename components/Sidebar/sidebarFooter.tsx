@@ -11,8 +11,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
-
+import { useSession } from "next-auth/react";
 export default function SidebarFooterComponent() {
+  const session = useSession();
+  const username = session.data?.user?.name;
   return (
     <SidebarFooter>
       <SidebarMenu>
@@ -20,7 +22,7 @@ export default function SidebarFooterComponent() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton>
-                <User2 /> Username
+                <User2 /> {username ?? "signin first"}
                 <ChevronUp className="ml-auto" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
