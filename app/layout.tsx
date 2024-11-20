@@ -20,7 +20,7 @@ export default function RootLayout({
         <Providers>
           <SidebarProvider>
             <AppSidebar />
-
+            {/* TODO: Next js capabilities arent being used fully....need to optimize a lot of things */}
             <main className="w-full h-full max-h-screen">{children}</main>
           </SidebarProvider>
         </Providers>
