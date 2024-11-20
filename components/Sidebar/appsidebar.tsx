@@ -1,6 +1,6 @@
 "use client";
 import { ChevronDown, History, Telescope } from "lucide-react";
-
+import { signIn, signOut, useSession } from "next-auth/react";
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +22,8 @@ import { useRouter, useParams } from "next/navigation";
 
 export function AppSidebar() {
   const { userChats, addNewChat } = useUserChatStore();
+  const session = useSession();
+  const username = session.data?.user?.name;
   const router = useRouter();
   const params = useParams<{ chatId: string }>();
   function addNewUserChat() {
@@ -54,7 +56,7 @@ export function AppSidebar() {
           <SidebarGroup>
             <SidebarGroupLabel asChild>
               <CollapsibleTrigger>
-                <History /> History{" "}
+                <History /> Recent Chats{" "}
                 <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
               </CollapsibleTrigger>
             </SidebarGroupLabel>
@@ -82,6 +84,25 @@ export function AppSidebar() {
           </SidebarGroup>
         </Collapsible>
       </SidebarContent>
+      {!username ? (
+        <Button
+          className="mx-2"
+          onClick={() => {
+            signIn();
+          }}
+        >
+          Login
+        </Button>
+      ) : (
+        <Button
+          className="mx-2"
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Logout
+        </Button>
+      )}
       <SidebarTrigger />
       <SidebarFooterComponent />
     </Sidebar>
