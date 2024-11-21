@@ -5,10 +5,36 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["public", "generoid"]
 }
+
+model GeneroidUsers {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String?  @unique
+  chats     Chat[]
+  createdAt DateTime @default(now())
+
+  @@schema("generoid")
+}
+
+model Chat {
+  id        String        @id @default(cuid())
+  userId    String
+  name      String // Chat name
+  messages  Json
+  user      GeneroidUsers @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime      @default(now())
+
+  @@schema("generoid")
+}
+
+//when you change the schema here, run: npx prisma migrate dev --name migration_name and then npx prisma generate
+//TODO: add all prisma functions (eg for inserting a user, adding a chat etc) in a separate fie
