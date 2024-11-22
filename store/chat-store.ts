@@ -72,3 +72,5 @@ export const useUserChatStore = create<UserChatStore>((set) => ({
 // Using Prisma functions directly in a Zustand store will cause issues because the store runs on the client side
 // SOLUTION:
 // MAKE API CALLS (FETCH CALLS) FROM THE STORE , AND MOVE THE PRISMA FUNCTIONS TO /API FOLDER
+//reference: https://claude.ai/chat/e9131730-8faf-481a-9a50-bad7b0ac2a11
+//need to write some store logic as well => properly check that
