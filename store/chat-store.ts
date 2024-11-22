@@ -66,3 +66,9 @@ export const useUserChatStore = create<UserChatStore>((set) => ({
   }
   //TODO: Add functions for delete & rename user chat  
 }))
+
+
+//TODO: BUG FIX SOLUTION:
+// Using Prisma functions directly in a Zustand store will cause issues because the store runs on the client side
+// SOLUTION:
+// MAKE API CALLS (FETCH CALLS) FROM THE STORE , AND MOVE THE PRISMA FUNCTIONS TO /API FOLDER
