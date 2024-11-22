@@ -28,8 +28,8 @@ model GeneroidUsers {
 model Chat {
   id        String        @id @default(cuid())
   userId    String
-  name      String // Chat name
-  messages  Json
+  name      String
+  messages  Json[]
   user      GeneroidUsers @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime      @default(now())
 

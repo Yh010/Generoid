@@ -1,8 +1,6 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
-import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient()
+import { CheckExistingUser, CreateNewUser } from "../../lib/prismaFunctions";
 
 //TODO: when deploying, change the call back urls and authorized urls to the deployed domain
 export const handler = NextAuth({
@@ -14,16 +12,9 @@ export const handler = NextAuth({
   ],
   callbacks: {
     async signIn({ profile }) {
-      const existingUser = await prisma.generoidUsers.findUnique({
-        where: { email: profile?.email }
-      })
+      const existingUser = await CheckExistingUser(profile)
       if (!existingUser) {
-        await prisma.generoidUsers.create({
-          data: {
-            email: profile?.email,
-            name: profile?.name,
-          }
-        })
+        await CreateNewUser(profile)
       }
       return true
     }
