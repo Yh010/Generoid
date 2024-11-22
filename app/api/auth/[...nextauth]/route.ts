@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
-import { CheckExistingUser, CreateNewUser } from "../../lib/prismaFunctions";
+import { CheckExistingUser, CreateNewUser } from "../../../lib/server/prismaFunctions";
 
 //TODO: when deploying, change the call back urls and authorized urls to the deployed domain
 export const handler = NextAuth({
@@ -12,7 +12,7 @@ export const handler = NextAuth({
   ],
   callbacks: {
     async signIn({ profile }) {
-      const existingUser = await CheckExistingUser(profile)
+      const existingUser = await CheckExistingUser(profile?.email)
       if (!existingUser) {
         await CreateNewUser(profile)
       }

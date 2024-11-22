@@ -2,23 +2,19 @@
 import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
-interface Profile {
-  email?: string
-  name?: string
-}
 
 interface Message {
   role: 'user' | 'assistant'
   content: string
 }
-
-export async function CheckExistingUser(profile:any) {
+//done
+export async function CheckExistingUser(email:any) {
     const existingUser = await prisma.generoidUsers.findUnique({
-        where: { email: profile?.email }
+        where: { email: email }
     })
     return existingUser;
 }
-
+//done
 export async function CreateNewUser(profile:any) {
     await prisma.generoidUsers.create({
         data: {
@@ -28,8 +24,8 @@ export async function CreateNewUser(profile:any) {
     })
 }
 
-export async function CreateNewChat(profile:any,chatName:string) {
-    const user = await CheckExistingUser(profile);
+export async function CreateNewChat(email:any,chatName:string) {
+    const user = await CheckExistingUser(email);
     if (!user) throw new Error("User not found")
     return await prisma.chat.create({
         data: {
@@ -56,12 +52,16 @@ export async function AddNewMessage(message: Message, chatId: string) {
     })
 }
 
-export async function GetUserChats(profile: Profile) {
-  const user = await CheckExistingUser(profile)
+//done
+export async function GetUserChats(email:string) {
+  const user = await CheckExistingUser(email)
   if (!user) throw new Error("User not found")
 
   return await prisma.chat.findMany({
     where: { userId: user.id },
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: 'desc' },
+    include: {
+      user: { select: { email: true } }, // Include email from the related user
+    },
   })
 }

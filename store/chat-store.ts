@@ -1,6 +1,7 @@
+import { CreateNewChat, GetUserChats } from '@/app/lib/server/prismaFunctions'
+import { JsonArray } from '@prisma/client/runtime/library'
 import { create } from 'zustand'
 
-//TODO: Db functions to store everything to db => db code should be in the backend, and things to store in the db =>chathistory and chatid and user details
 
 interface Message {
   role: 'user' | 'assistant'
@@ -15,34 +16,53 @@ interface ChatStore {
 }
 
 interface UserChat{
-  chatId: string
-  chatName: string
+  id: string
+  name: string
+  messages: JsonArray
+  email:string
   //store the code as well?
 }
 
 interface UserChatStore{
   userChats: UserChat[]  
-  addNewChat: (newChat: UserChat) => void
+  fetchUserChats: (email: string) => Promise<void>;
+  addNewChat: (newChat: UserChat) => Promise<void>
 }
 
 export const useChatStore = create<ChatStore>((set) => ({
   messages: [],
   codeState:'',
   addMessage: (message) => 
-    set((state) => ({ messages: [...state.messages, message] })),
+  set((state) => ({ messages: [...state.messages, message] })),
   setCode: (code:string) =>  set({codeState:code })
 }))
 
 export const useUserChatStore = create<UserChatStore>((set) => ({
   userChats: [],
-  addNewChat: (newChat) => set((state) => ({ userChats: [...state.userChats, newChat] }))
-  //TODO: Add delete & rename user chat
-  //TODO: when new user chat is created, the chat from other userchats should not come in this new chat => that is, contents of other chats shouldnt get mixed
-  // solution => associate each userchat and contents with the id like this:
-  // userchat-23r2r2r : {
-  //    id:
-  //    contents: 
-  // }
-  //properly modify the above structure
-  
+  fetchUserChats: async (email: string) => {
+    if (!email) return;
+    try {
+      const chats = await GetUserChats(email);
+      const userChats = chats.map((chat) => ({
+        id: chat.id,
+        name: chat.name,
+        messages: chat.messages,
+        email: chat.user.email || "", // Access the included email
+      }));
+      set({ userChats });
+    } catch (error) {
+      console.error('Error fetching user chats:', error);
+    }
+  },
+  addNewChat: async (newChat) => {
+    if (!newChat.email) return;
+    try {
+      await CreateNewChat(newChat.email, newChat.name); 
+      console.log("reacged her");
+      set((state) => ({ userChats: [...state.userChats, newChat] }))
+    } catch (error) {
+       console.error('Error creating new chat for user:', error);
+    }
+  }
+  //TODO: Add functions for delete & rename user chat  
 }))

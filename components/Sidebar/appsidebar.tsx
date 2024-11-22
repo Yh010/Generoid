@@ -19,18 +19,31 @@ import { useUserChatStore } from "@/store/chat-store";
 import { randomIdGenerator } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useRouter, useParams } from "next/navigation";
+import { useEffect } from "react";
 
 export function AppSidebar() {
-  const { userChats, addNewChat } = useUserChatStore();
+  const { userChats, addNewChat, fetchUserChats } = useUserChatStore();
   const session = useSession();
   const username = session.data?.user?.name;
+  const email = session.data?.user?.email;
   const router = useRouter();
   const params = useParams<{ chatId: string }>();
   function addNewUserChat() {
     const id = randomIdGenerator();
-    addNewChat({ chatId: id, chatName: `Chat ${userChats.length + 1}` });
+    addNewChat({
+      id: id,
+      name: `Chat ${userChats.length + 1}`,
+      email: email || "",
+      messages: [],
+    });
     router.push("/");
   }
+
+  useEffect(() => {
+    if (email) {
+      fetchUserChats(email);
+    }
+  }, [email, fetchUserChats]);
 
   return (
     <Sidebar collapsible="icon">
@@ -70,12 +83,12 @@ export function AppSidebar() {
                     <div
                       key={index}
                       className={
-                        userchat.chatId === params.chatId
+                        userchat.id === params.chatId
                           ? "border bg-gray-200 rounded-lg px-1"
                           : "px-1"
                       }
                     >
-                      {userchat.chatName}
+                      {userchat.name}
                     </div>
                   ))
                 )}
