@@ -19,20 +19,37 @@ interface PageProp {
   };
 }
 export default function Page({ params }: PageProp) {
-  const { messages, addMessage, codeState, setCode } = useChatStore();
+  const { messages, addMessage, codeState, setCode, currentChat } =
+    useChatStore();
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   //introduce new state here to clear the input box when user sends a message
   async function sendMessage() {
     if (!newMessage.trim()) return;
+    //if (!currentChat) return;
+    console.log("reached herer");
     setIsLoading(true);
-    addMessage({ role: "user", content: newMessage });
+    // await addMessage(currentChat?.id, {
+    //   role: "user",
+    //   content: newMessage,
+    // });
+    await addMessage("cm3tsg6ow00015he8u06r52fg", {
+      role: "user",
+      content: newMessage,
+    });
 
     const response = await axios.post("/api/ai", {
       message: newMessage,
       history: messages,
     });
-    addMessage({ role: "assistant", content: response.data.description });
+    // await addMessage(currentChat?.id, {
+    //   role: "assistant",
+    //   content: response.data.description,
+    // });
+    await addMessage("cm3tsg6ow00015he8u06r52fg", {
+      role: "assistant",
+      content: response.data.description,
+    });
     setCode(response.data.code);
     setIsLoading(false);
     setNewMessage("");

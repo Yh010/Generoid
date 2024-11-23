@@ -16,7 +16,6 @@ import {
 } from "../ui/collapsible";
 import SidebarFooterComponent from "./sidebarFooter";
 import { useUserChatStore } from "@/store/chat-store";
-import { randomIdGenerator } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
@@ -29,19 +28,13 @@ export function AppSidebar() {
   const router = useRouter();
   const params = useParams<{ chatId: string }>();
   function addNewUserChat() {
-    const id = randomIdGenerator();
-    addNewChat({
-      id: id,
-      name: `Chat ${userChats.length + 1}`,
-      email: email || "",
-      messages: [],
-    });
+    addNewChat(`Chat ${userChats.length + 1}`);
     router.push("/");
   }
 
   useEffect(() => {
     if (email) {
-      fetchUserChats(email);
+      fetchUserChats();
     }
   }, [email, fetchUserChats]);
 

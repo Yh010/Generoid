@@ -11,7 +11,7 @@ interface MessageProps {
   message: string;
 }
 export function SendMessageButton({ message }: MessageProps) {
-  const { setCode } = useChatStore();
+  const { setCode, currentChat } = useChatStore();
   const { userChats, addNewChat } = useUserChatStore();
   const [loading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -19,23 +19,24 @@ export function SendMessageButton({ message }: MessageProps) {
 
   async function addNewUserChat() {
     const id = randomIdGenerator();
-    addNewChat({ chatId: id, chatName: `Chat ${userChats.length + 1}` });
+    await addNewChat(`Chat ${userChats.length + 1}`);
     return id;
   }
 
   async function sendMessage() {
+    if (!currentChat) return;
     try {
       setIsLoading(true);
-      addMessage({ role: "user", content: message });
+      addMessage(currentChat?.id, { role: "user", content: message });
       let chatId;
       if (userChats.length === 0) {
         chatId = await addNewUserChat();
       } else {
         const lastChat = userChats[userChats.length - 1];
-        if (!lastChat || !lastChat.chatId) {
+        if (!lastChat || !lastChat.id) {
           chatId = await addNewUserChat();
         } else {
-          chatId = lastChat.chatId;
+          chatId = lastChat.id;
         }
       }
 
@@ -43,7 +44,10 @@ export function SendMessageButton({ message }: MessageProps) {
         message: message,
       });
 
-      addMessage({ role: "assistant", content: response.data.description });
+      addMessage(currentChat?.id, {
+        role: "assistant",
+        content: response.data.description,
+      });
       setCode(response.data.code);
       if (chatId) {
         router.push(`/chat/${chatId}`);

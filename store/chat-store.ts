@@ -1,5 +1,3 @@
-import { CreateNewChat, GetUserChats } from '@/app/lib/server/prismaFunctions'
-import { JsonArray } from '@prisma/client/runtime/library'
 import { create } from 'zustand'
 
 
@@ -9,63 +7,130 @@ interface Message {
 }
 
 interface ChatStore {
+  userChats: UserChat[]  
   messages: Message[]
-  addMessage: (message: Message) => void
+  addMessage: (chatId: string,message: Message) => Promise<void>
   codeState: string
-  setCode:(code: string) => void
+  setCode: (code: string) => void
+  isLoading: boolean;
+  error: string | null
+  currentChat: UserChat | null
+  setCurrentChat: (chat: UserChat | null) => void
+  clearError: () => void
 }
 
 interface UserChat{
   id: string
   name: string
-  messages: JsonArray
-  email:string
+  messages: Message[]
+  createdAt:  Date
   //store the code as well?
 }
 
 interface UserChatStore{
   userChats: UserChat[]  
-  fetchUserChats: (email: string) => Promise<void>;
-  addNewChat: (newChat: UserChat) => Promise<void>
+  fetchUserChats: () => Promise<void>;
+  addNewChat: (chatName: string) => Promise<void>;
+  isLoading: boolean;
+  error: string | null
+ // currentChat: Chat | null
 }
 
 export const useChatStore = create<ChatStore>((set) => ({
+  userChats: [],
   messages: [],
-  codeState:'',
-  addMessage: (message) => 
-  set((state) => ({ messages: [...state.messages, message] })),
-  setCode: (code:string) =>  set({codeState:code })
+  codeState: '',
+  isLoading: false,
+  error: null,
+  currentChat: null,
+ 
+  //done
+  addMessage: async (chatId: string, message: Message) => {
+    set({ isLoading: true, error: null })
+    try {
+      const response = await fetch(`/api/chat/${chatId}/message`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      })
+      if (!response.ok) throw new Error('Failed to add message')
+      const updatedChat = await response.json();
+      set(state => ({
+        userChats: state.userChats.map(chat => 
+          chat.id === chatId ? updatedChat : chat
+        ),
+        currentChat: state.currentChat?.id === chatId ? updatedChat : state.currentChat
+      }))
+     
+    } catch (error) {
+      set({ error: (error as Error).message })
+      throw error
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+  //TODO: add fetchChatMessages action
+
+
+  setCode: (code: string) => set({ codeState: code }),
+  setCurrentChat: (chat) => set({ currentChat: chat }),
+  clearError: () => set({ error: null })
 }))
 
 export const useUserChatStore = create<UserChatStore>((set) => ({
   userChats: [],
-  fetchUserChats: async (email: string) => {
-    if (!email) return;
+  isLoading: false,
+  error: null, 
+  //currentChat: null,
+  //done 
+  fetchUserChats: async () => {
+    set({ isLoading: true, error: null })
     try {
-      const chats = await GetUserChats(email);
-      const userChats = chats.map((chat) => ({
-        id: chat.id,
-        name: chat.name,
-        messages: chat.messages,
-        email: chat.user.email || "", // Access the included email
-      }));
-      set({ userChats });
+      const response = await fetch('/api/chat');
+      if (!response.ok) throw new Error('Failed to fetch chats')
+      const userChats = await response.json()
+      set({ userChats })
+
     } catch (error) {
-      console.error('Error fetching user chats:', error);
+      set({ error: (error as Error).message })
+    }finally {
+      set({ isLoading: false })
+    }
+   
+  },
+
+  //done
+  addNewChat: async (chatName:string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chatName })
+      })
+      if (!response.ok) throw new Error('Failed to create chat')
+      const newChat = await response.json()
+      set(state => ({
+        userChats: [newChat, ...state.userChats]
+      }));
+      return newChat
+    } catch (error) {
+      set({ error: (error as Error).message })
+      throw error
+    } finally {
+      set({ isLoading: false })
     }
   },
-  addNewChat: async (newChat) => {
-    if (!newChat.email) return;
-    try {
-      await CreateNewChat(newChat.email, newChat.name); 
-      console.log("reacged her");
-      set((state) => ({ userChats: [...state.userChats, newChat] }))
-    } catch (error) {
-       console.error('Error creating new chat for user:', error);
-    }
-  }
+  //setCurrentChat: (chat) => set({ currentChat: chat }),
+  clearError: () => set({ error: null })
   //TODO: Add functions for delete & rename user chat  
 }))
+
+// TODO:
+// - use of currentChat
+// - fix message sending on landing page 
+// - why messages arent rendering on the chat page 
+
 
 
 //TODO: BUG FIX SOLUTION:
