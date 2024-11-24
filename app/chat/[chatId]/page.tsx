@@ -2,7 +2,7 @@
 import { useChatStore } from "@/store/chat-store";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Bot, Ellipsis, PenLine, Trash2, Webhook } from "lucide-react";
 import CodeSandbox from "@/components/CodeSandbox/CodeSandbox";
@@ -19,8 +19,14 @@ interface PageProp {
   };
 }
 export default function Page({ params }: PageProp) {
-  const { messages, addMessage, codeState, setCode, currentChat } =
-    useChatStore();
+  const {
+    messages,
+    addMessage,
+    codeState,
+    setCode,
+    currentChat,
+    fetchChatMessages,
+  } = useChatStore();
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   //introduce new state here to clear the input box when user sends a message
@@ -29,11 +35,7 @@ export default function Page({ params }: PageProp) {
     //if (!currentChat) return;
     console.log("reached herer");
     setIsLoading(true);
-    // await addMessage(currentChat?.id, {
-    //   role: "user",
-    //   content: newMessage,
-    // });
-    await addMessage("cm3tsg6ow00015he8u06r52fg", {
+    await addMessage(params.chatId, {
       role: "user",
       content: newMessage,
     });
@@ -42,11 +44,7 @@ export default function Page({ params }: PageProp) {
       message: newMessage,
       history: messages,
     });
-    // await addMessage(currentChat?.id, {
-    //   role: "assistant",
-    //   content: response.data.description,
-    // });
-    await addMessage("cm3tsg6ow00015he8u06r52fg", {
+    await addMessage(params.chatId, {
       role: "assistant",
       content: response.data.description,
     });
@@ -54,6 +52,11 @@ export default function Page({ params }: PageProp) {
     setIsLoading(false);
     setNewMessage("");
   }
+
+  useEffect(() => {
+    fetchChatMessages(params.chatId);
+    console.log(params.chatId);
+  }, [params.chatId, fetchChatMessages]);
   return (
     <div className="flex justify-center h-screen">
       <div className="w-1/2 pb-6 px-6 pt-4">

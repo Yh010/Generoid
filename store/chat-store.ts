@@ -17,6 +17,7 @@ interface ChatStore {
   currentChat: UserChat | null
   setCurrentChat: (chat: UserChat | null) => void
   clearError: () => void
+  fetchChatMessages: (chatId:string) => Promise<void>
 }
 
 interface UserChat{
@@ -59,7 +60,8 @@ export const useChatStore = create<ChatStore>((set) => ({
         userChats: state.userChats.map(chat => 
           chat.id === chatId ? updatedChat : chat
         ),
-        currentChat: state.currentChat?.id === chatId ? updatedChat : state.currentChat
+        currentChat: state.currentChat?.id === chatId ? updatedChat : state.currentChat,
+        messages: updatedChat.messages
       }))
      
     } catch (error) {
@@ -69,7 +71,31 @@ export const useChatStore = create<ChatStore>((set) => ({
       set({ isLoading: false })
     }
   },
-  //TODO: add fetchChatMessages action
+
+  fetchChatMessages: async (chatId:string) => {
+    set({ isLoading: true, error: null })
+    try {
+      const response = await fetch(`/api/chat/${chatId}/message`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch messages')
+      }
+
+      const chat = await response.json();
+      set(state => ({
+        messages: chat.messages,
+        currentChat: chat, 
+        userChats: state.userChats.map(existingChat => 
+          existingChat.id === chatId ? chat : existingChat
+        )
+      }));
+      
+    }catch (error) {
+      set({ error: (error as Error).message })
+      throw error
+    } finally {
+      set({ isLoading: false })
+    }
+  },
 
 
   setCode: (code: string) => set({ codeState: code }),
@@ -128,14 +154,3 @@ export const useUserChatStore = create<UserChatStore>((set) => ({
 
 // TODO:
 // - use of currentChat
-// - fix message sending on landing page 
-// - why messages arent rendering on the chat page 
-
-
-
-//TODO: BUG FIX SOLUTION:
-// Using Prisma functions directly in a Zustand store will cause issues because the store runs on the client side
-// SOLUTION:
-// MAKE API CALLS (FETCH CALLS) FROM THE STORE , AND MOVE THE PRISMA FUNCTIONS TO /API FOLDER
-//reference: https://claude.ai/chat/e9131730-8faf-481a-9a50-bad7b0ac2a11
-//need to write some store logic as well => properly check that

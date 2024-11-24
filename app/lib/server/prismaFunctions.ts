@@ -65,3 +65,15 @@ export async function GetUserChats(email:string) {
     },
   })
 }
+
+//done
+export async function GetChatMessages(email:string,chatId:string) {
+    const user = await CheckExistingUser(email)
+    if (!user) throw new Error("User not found")
+    
+    return await prisma.chat.findUnique({
+        where: {
+            id:chatId
+        }
+    })
+}
