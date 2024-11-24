@@ -68,21 +68,24 @@ export function AppSidebar() {
             </SidebarGroupLabel>
             <CollapsibleContent>
               {/* TODO: Improve UI => scrollbar only for this section and not the whole sidebar*/}
-              <div className="space-y-4 ">
+              <div className="space-y-4 flex flex-col">
                 {userChats.length === 0 ? (
                   <div>Start adding new chats to continue!</div>
                 ) : (
                   userChats.map((userchat, index) => (
-                    <div
+                    <Button
                       key={index}
                       className={
                         userchat.id === params.chatId
-                          ? "border bg-gray-200 rounded-lg px-1"
-                          : "px-1"
+                          ? "border bg-gray-200 rounded-lg px-1 text-black"
+                          : "px-1 bg-white text-black"
                       }
+                      onClick={() => {
+                        router.push(`/chat/${userchat.id}`);
+                      }}
                     >
                       {userchat.name}
-                    </div>
+                    </Button>
                   ))
                 )}
               </div>

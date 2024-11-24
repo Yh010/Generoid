@@ -40,7 +40,7 @@ interface UserChatStore{
 export const useChatStore = create<ChatStore>((set) => ({
   userChats: [],
   messages: [],
-  codeState: '',
+  codeState: '', //TODO: Bug: need to fix this action to update code and preview state based on chatId
   isLoading: false,
   error: null,
   currentChat: null,
