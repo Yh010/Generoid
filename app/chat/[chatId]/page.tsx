@@ -55,7 +55,7 @@ export default function Page({ params }: PageProp) {
 
   useEffect(() => {
     fetchChatMessages(params.chatId);
-    console.log(params.chatId);
+    //TODO: BUG: On page refresh, the code and preview section lose their values => so add these zustand actions here in the useEffect
   }, [params.chatId, fetchChatMessages]);
   return (
     <div className="flex justify-center h-screen">

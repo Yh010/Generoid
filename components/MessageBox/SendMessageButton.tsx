@@ -60,7 +60,7 @@ export function SendMessageButton({ message }: MessageProps) {
       setIsLoading(false);
     }
   }
-
+  //TODO: BUG: on sending message, the page redirects to the chatId 1 page, and the message sent by the user is also lost
   return (
     <Button
       variant="outline"
