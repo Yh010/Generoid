@@ -71,7 +71,7 @@ export const useChatStore = create<ChatStore>((set) => ({
       set({ isLoading: false })
     }
   },
-
+  //TODO: Graceful error handling, eg) if user is logged out => this function gives an error
   fetchChatMessages: async (chatId:string) => {
     set({ isLoading: true, error: null })
     try {
