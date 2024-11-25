@@ -19,14 +19,8 @@ interface PageProp {
   };
 }
 export default function Page({ params }: PageProp) {
-  const {
-    messages,
-    addMessage,
-    codeState,
-    setCode,
-    currentChat,
-    fetchChatMessages,
-  } = useChatStore();
+  const { messages, addMessage, codeState, setCode, fetchChatMessages } =
+    useChatStore();
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   //introduce new state here to clear the input box when user sends a message

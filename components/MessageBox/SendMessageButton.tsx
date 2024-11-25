@@ -22,7 +22,7 @@ export function SendMessageButton({ message }: MessageProps) {
     await addNewChat(`Chat ${userChats.length + 1}`);
     return id;
   }
-
+  //TODO:Change the below logic to:  if the last chat is empty then add the user sent message to that chat and continue, else create a new chat
   async function sendMessage() {
     if (!currentChat) return;
     try {
