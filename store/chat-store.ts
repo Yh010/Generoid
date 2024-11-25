@@ -31,10 +31,9 @@ interface UserChat{
 interface UserChatStore{
   userChats: UserChat[]  
   fetchUserChats: () => Promise<void>;
-  addNewChat: (chatName: string) => Promise<void>;
+  addNewChat: (chatName: string) => Promise<UserChat>;
   isLoading: boolean;
-  error: string | null
- // currentChat: Chat | null
+  error: string | null;
 }
 
 export const useChatStore = create<ChatStore>((set) => ({
@@ -72,6 +71,14 @@ export const useChatStore = create<ChatStore>((set) => ({
     }
   },
   //TODO: Graceful error handling, eg) if user is logged out => this function gives an error
+  //TODO: BUG:
+  // const response = await fetch(`/api/chat/${chatId}/message`);
+//   80 |       if (!response.ok) {
+// > 81 |         throw new Error('Failed to fetch messages')
+//      |               ^
+//   82 |       }
+  //
+  //
   fetchChatMessages: async (chatId:string) => {
     set({ isLoading: true, error: null })
     try {
@@ -107,7 +114,6 @@ export const useUserChatStore = create<UserChatStore>((set) => ({
   userChats: [],
   isLoading: false,
   error: null, 
-  //currentChat: null,
   //done 
   fetchUserChats: async () => {
     set({ isLoading: true, error: null })
@@ -135,7 +141,8 @@ export const useUserChatStore = create<UserChatStore>((set) => ({
         body: JSON.stringify({ chatName })
       })
       if (!response.ok) throw new Error('Failed to create chat')
-      const newChat = await response.json()
+      const newChat = await response.json();
+      console.log(newChat.id)
       set(state => ({
         userChats: [newChat, ...state.userChats]
       }));
@@ -147,7 +154,6 @@ export const useUserChatStore = create<UserChatStore>((set) => ({
       set({ isLoading: false })
     }
   },
-  //setCurrentChat: (chat) => set({ currentChat: chat }),
   clearError: () => set({ error: null })
   //TODO: Add functions for delete & rename user chat  
 }))

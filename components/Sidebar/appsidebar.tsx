@@ -21,14 +21,13 @@ import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
 
 export function AppSidebar() {
-  const { userChats, addNewChat, fetchUserChats } = useUserChatStore();
+  const { userChats, fetchUserChats } = useUserChatStore();
   const session = useSession();
   const username = session.data?.user?.name;
   const email = session.data?.user?.email;
   const router = useRouter();
   const params = useParams<{ chatId: string }>();
   function addNewUserChat() {
-    addNewChat(`Chat ${userChats.length + 1}`);
     router.push("/");
   }
 

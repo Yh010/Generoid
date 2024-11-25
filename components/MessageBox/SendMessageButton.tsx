@@ -5,46 +5,33 @@ import { useRouter } from "next/navigation";
 import { useChatStore, useUserChatStore } from "@/store/chat-store";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { randomIdGenerator } from "@/lib/utils";
 
 interface MessageProps {
   message: string;
 }
 export function SendMessageButton({ message }: MessageProps) {
-  const { setCode, currentChat } = useChatStore();
+  const { setCode } = useChatStore();
   const { userChats, addNewChat } = useUserChatStore();
   const [loading, setIsLoading] = useState(false);
   const router = useRouter();
   const addMessage = useChatStore((state) => state.addMessage);
 
-  async function addNewUserChat() {
-    const id = randomIdGenerator();
-    await addNewChat(`Chat ${userChats.length + 1}`);
-    return id;
-  }
-  //TODO:Change the below logic to:  if the last chat is empty then add the user sent message to that chat and continue, else create a new chat
+  const getTargetChatId = async (): Promise<string> => {
+    const newChat = await addNewChat(`Chat ${userChats.length + 1}`);
+    return newChat.id;
+  };
+
   async function sendMessage() {
-    if (!currentChat) return;
     try {
       setIsLoading(true);
-      addMessage(currentChat?.id, { role: "user", content: message });
-      let chatId;
-      if (userChats.length === 0) {
-        chatId = await addNewUserChat();
-      } else {
-        const lastChat = userChats[userChats.length - 1];
-        if (!lastChat || !lastChat.id) {
-          chatId = await addNewUserChat();
-        } else {
-          chatId = lastChat.id;
-        }
-      }
+      const chatId = await getTargetChatId();
 
+      addMessage(chatId, { role: "user", content: message });
       const response = await axios.post("/api/ai", {
         message: message,
       });
 
-      addMessage(currentChat?.id, {
+      addMessage(chatId, {
         role: "assistant",
         content: response.data.description,
       });
@@ -60,7 +47,7 @@ export function SendMessageButton({ message }: MessageProps) {
       setIsLoading(false);
     }
   }
-  //TODO: BUG: on sending message, the page redirects to the chatId 1 page, and the message sent by the user is also lost
+
   return (
     <Button
       variant="outline"
