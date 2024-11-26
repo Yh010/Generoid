@@ -2,7 +2,7 @@
 import { useChatStore } from "@/store/chat-store";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Bot, Ellipsis, PenLine, Trash2, Webhook } from "lucide-react";
 import CodeSandbox from "@/components/CodeSandbox/CodeSandbox";
@@ -19,24 +19,38 @@ interface PageProp {
   };
 }
 export default function Page({ params }: PageProp) {
-  const { messages, addMessage, codeState, setCode } = useChatStore();
+  const { messages, addMessage, codeState, setCode, fetchChatMessages } =
+    useChatStore();
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   //introduce new state here to clear the input box when user sends a message
   async function sendMessage() {
     if (!newMessage.trim()) return;
+    //if (!currentChat) return;
+    console.log("reached herer");
     setIsLoading(true);
-    addMessage({ role: "user", content: newMessage });
+    await addMessage(params.chatId, {
+      role: "user",
+      content: newMessage,
+    });
 
     const response = await axios.post("/api/ai", {
       message: newMessage,
       history: messages,
     });
-    addMessage({ role: "assistant", content: response.data.description });
+    await addMessage(params.chatId, {
+      role: "assistant",
+      content: response.data.description,
+    });
     setCode(response.data.code);
     setIsLoading(false);
     setNewMessage("");
   }
+
+  useEffect(() => {
+    fetchChatMessages(params.chatId);
+    //TODO: BUG: On page refresh, the code and preview section lose their values => so add these zustand actions here in the useEffect
+  }, [params.chatId, fetchChatMessages]);
   return (
     <div className="flex justify-center h-screen">
       <div className="w-1/2 pb-6 px-6 pt-4">

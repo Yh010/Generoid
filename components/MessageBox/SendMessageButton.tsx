@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useChatStore, useUserChatStore } from "@/store/chat-store";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { randomIdGenerator } from "@/lib/utils";
 
 interface MessageProps {
   message: string;
@@ -17,33 +16,25 @@ export function SendMessageButton({ message }: MessageProps) {
   const router = useRouter();
   const addMessage = useChatStore((state) => state.addMessage);
 
-  async function addNewUserChat() {
-    const id = randomIdGenerator();
-    addNewChat({ chatId: id, chatName: `Chat ${userChats.length + 1}` });
-    return id;
-  }
+  const getTargetChatId = async (): Promise<string> => {
+    const newChat = await addNewChat(`Chat ${userChats.length + 1}`);
+    return newChat.id;
+  };
 
   async function sendMessage() {
     try {
       setIsLoading(true);
-      addMessage({ role: "user", content: message });
-      let chatId;
-      if (userChats.length === 0) {
-        chatId = await addNewUserChat();
-      } else {
-        const lastChat = userChats[userChats.length - 1];
-        if (!lastChat || !lastChat.chatId) {
-          chatId = await addNewUserChat();
-        } else {
-          chatId = lastChat.chatId;
-        }
-      }
+      const chatId = await getTargetChatId();
 
+      addMessage(chatId, { role: "user", content: message });
       const response = await axios.post("/api/ai", {
         message: message,
       });
 
-      addMessage({ role: "assistant", content: response.data.description });
+      addMessage(chatId, {
+        role: "assistant",
+        content: response.data.description,
+      });
       setCode(response.data.code);
       if (chatId) {
         router.push(`/chat/${chatId}`);

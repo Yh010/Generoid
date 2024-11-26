@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "generoid"]
+}
+
+model GeneroidUsers {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String?  @unique
+  chats     Chat[]
+  createdAt DateTime @default(now())
+
+  @@schema("generoid")
+}
+
+model Chat {
+  id        String        @id @default(cuid())
+  userId    String
+  name      String
+  messages  Json[]
+  user      GeneroidUsers @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime      @default(now())
+
+  @@schema("generoid")
+}
+
+//TODO:(think more on this/find a simpler solution) Create a new Code schema to store a chats codes => this might help in fetching the codes on 1st render + feature of selecting which code to preview
+
+// When you change your Prisma schema, follow these steps:
+
+// development:
+
+// npx prisma migrate dev --name description
+//npx prisma generate
+// For deploying:
+
+// npx prisma migrate deploy

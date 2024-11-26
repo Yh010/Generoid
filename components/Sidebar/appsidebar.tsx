@@ -16,21 +16,26 @@ import {
 } from "../ui/collapsible";
 import SidebarFooterComponent from "./sidebarFooter";
 import { useUserChatStore } from "@/store/chat-store";
-import { randomIdGenerator } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useRouter, useParams } from "next/navigation";
+import { useEffect } from "react";
 
 export function AppSidebar() {
-  const { userChats, addNewChat } = useUserChatStore();
+  const { userChats, fetchUserChats } = useUserChatStore();
   const session = useSession();
   const username = session.data?.user?.name;
+  const email = session.data?.user?.email;
   const router = useRouter();
   const params = useParams<{ chatId: string }>();
   function addNewUserChat() {
-    const id = randomIdGenerator();
-    addNewChat({ chatId: id, chatName: `Chat ${userChats.length + 1}` });
     router.push("/");
   }
+
+  useEffect(() => {
+    if (email) {
+      fetchUserChats();
+    }
+  }, [email, fetchUserChats]);
 
   return (
     <Sidebar collapsible="icon">
@@ -62,21 +67,24 @@ export function AppSidebar() {
             </SidebarGroupLabel>
             <CollapsibleContent>
               {/* TODO: Improve UI => scrollbar only for this section and not the whole sidebar*/}
-              <div className="space-y-4 ">
+              <div className="space-y-4 flex flex-col">
                 {userChats.length === 0 ? (
                   <div>Start adding new chats to continue!</div>
                 ) : (
                   userChats.map((userchat, index) => (
-                    <div
+                    <Button
                       key={index}
                       className={
-                        userchat.chatId === params.chatId
-                          ? "border bg-gray-200 rounded-lg px-1"
-                          : "px-1"
+                        userchat.id === params.chatId
+                          ? "border bg-gray-200 rounded-lg px-1 text-black"
+                          : "px-1 bg-white text-black"
                       }
+                      onClick={() => {
+                        router.push(`/chat/${userchat.id}`);
+                      }}
                     >
-                      {userchat.chatName}
-                    </div>
+                      {userchat.name}
+                    </Button>
                   ))
                 )}
               </div>
@@ -94,6 +102,9 @@ export function AppSidebar() {
           Login
         </Button>
       ) : (
+        //TODO: BUG:
+        // if i logout from one user from the route http://localhost:3000/chat/cm3tsg6ow00015he8u06r52fg, and signin to another => it takes me back to
+        //http://localhost:3000/chat/cm3tsg6ow00015he8u06r52fg and i can see the previous user's chats
         <Button
           className="mx-2"
           onClick={() => {
