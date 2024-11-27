@@ -1,5 +1,5 @@
 "use client";
-import { ChevronDown, History, Telescope } from "lucide-react";
+import { ChevronDown, Telescope } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import {
   Sidebar,
@@ -61,7 +61,7 @@ export function AppSidebar() {
           <SidebarGroup>
             <SidebarGroupLabel asChild>
               <CollapsibleTrigger>
-                <History /> Recent Chats{" "}
+                <div className="text-sm">Recent Chats</div>
                 <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
               </CollapsibleTrigger>
             </SidebarGroupLabel>
@@ -77,7 +77,7 @@ export function AppSidebar() {
                       className={
                         userchat.id === params.chatId
                           ? "border bg-gray-200 rounded-lg px-1 text-black"
-                          : "px-1 bg-white text-black"
+                          : "px-1 bg-white text-black hover:text-black hover:bg-gray-200"
                       }
                       onClick={() => {
                         router.push(`/chat/${userchat.id}`);
