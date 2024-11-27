@@ -54,6 +54,7 @@ export function SendMessageButton({ message }: MessageProps) {
       size="icon"
       className="absolute bottom-0 right-0.5 w-20 bg-black text-white mb-2 mr-2"
       onClick={sendMessage}
+      disabled={!message}
     >
       {loading ? (
         <Loader2 className="w-12 h-12 text-black-600 animate-spin" />

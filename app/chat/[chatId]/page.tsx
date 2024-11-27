@@ -94,6 +94,7 @@ export default function Page({ params }: PageProp) {
               />
               <Button
                 onClick={sendMessage}
+                disabled={!newMessage}
                 className="absolute bottom-2 right-2"
               >
                 Send
