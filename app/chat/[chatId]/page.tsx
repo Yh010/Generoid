@@ -26,8 +26,6 @@ export default function Page({ params }: PageProp) {
   //introduce new state here to clear the input box when user sends a message
   async function sendMessage() {
     if (!newMessage.trim()) return;
-    //if (!currentChat) return;
-    console.log("reached herer");
     setIsLoading(true);
     await addMessage(params.chatId, {
       role: "user",
