@@ -6,7 +6,7 @@ import {
   type TailwindConfig,
   createTailwindcss,
 } from "@mhsdesign/jit-browser-tailwindcss";
-import { ChevronsRight } from "lucide-react";
+import { ChevronsRight, Code, Monitor } from "lucide-react";
 import { Button } from "../ui/button";
 import { CodePanel } from "../Editor/Editor";
 
@@ -162,24 +162,30 @@ const CodeSandbox = ({ code, type }: CodeSandboxProps) => {
             <div className="flex justify-center items-center space-x-2">
               <ChevronsRight /> Component Name
             </div>
-            <div className="space-x-3 bg-slate-200 p-1 rounded-lg">
+            <div className="space-x-3 p-1 rounded-lg">
               <Button
                 value="code"
                 className={
-                  activetab == 0 ? "bg-black" : "bg-green-50 text-black"
+                  activetab == 0
+                    ? "bg-gray-200 text-black hover:text-black hover:bg-gray-200"
+                    : "bg-transparent shadow-none text-gray-500 hover:text-black hover:bg-gray-200"
                 }
                 onClick={() => setActiveTab(0)}
               >
-                Code
+                <Code />
+                <div>Code</div>
               </Button>
               <Button
                 value="preview"
                 className={
-                  activetab == 1 ? "bg-black" : "bg-green-50 text-black"
+                  activetab == 1
+                    ? "bg-gray-200 text-black hover:text-black hover:bg-gray-200"
+                    : "bg-transparent shadow-none text-gray-500 hover:text-black hover:bg-gray-200"
                 }
                 onClick={() => setActiveTab(1)}
               >
-                Preview
+                <Monitor />
+                <div>Preview</div>
               </Button>
             </div>
           </div>
