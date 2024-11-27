@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Bot, Ellipsis, PenLine, Trash2, Webhook } from "lucide-react";
+import { Ellipsis, PenLine, Telescope, Trash2, Webhook } from "lucide-react";
 import CodeSandbox from "@/components/CodeSandbox/CodeSandbox";
 import Thinking from "@/components/ChatPage/Thinking";
 import {
@@ -73,13 +73,11 @@ export default function Page({ params }: PageProp) {
             <div
               key={index}
               className={`p-4 rounded-lg flex ${
-                message.role === "user"
-                  ? "mr-auto w-full"
-                  : "mr-auto w-full bg-gray-100"
+                message.role === "user" ? "mr-auto w-full" : "mr-auto w-full"
               }`}
             >
               <div className="mr-3">
-                {message.role === "user" ? <Webhook /> : <Bot />}
+                {message.role === "user" ? <Webhook /> : <Telescope />}
               </div>
 
               {message.content}

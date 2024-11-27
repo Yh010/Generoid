@@ -1,3 +1,5 @@
+import { Telescope } from "lucide-react";
+
 export default function Thinking() {
   return (
     <div className="flex justify-start items-center px-2 space-x-3">
@@ -5,7 +7,9 @@ export default function Thinking() {
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
         <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
       </span>
-      <p className="animate-pulse">genie is thinking</p>
+      <p className="animate-pulse flex space-x-2">
+        <Telescope /> <p>is thinking...</p>
+      </p>
     </div>
   );
 }
