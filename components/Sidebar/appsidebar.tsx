@@ -102,13 +102,11 @@ export function AppSidebar() {
           Login
         </Button>
       ) : (
-        //TODO: BUG:
-        // if i logout from one user from the route http://localhost:3000/chat/cm3tsg6ow00015he8u06r52fg, and signin to another => it takes me back to
-        //http://localhost:3000/chat/cm3tsg6ow00015he8u06r52fg and i can see the previous user's chats
         <Button
           className="mx-2"
           onClick={() => {
-            signOut();
+            signOut({ redirect: false });
+            router.push("/");
           }}
         >
           Logout
